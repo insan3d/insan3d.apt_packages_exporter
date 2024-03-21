@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/tasks.json
 
-- name: Restart systemd unit
+- name: Restart systemd timer
   ansible.builtin.systemd:
     daemon_reload: true
     name: apt-daily.timer
