@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/role-arg-spec.json
+
+argument_specs:
+  main:
+    options:
+      apt_packages_exporter_oncalendar:
+        type: str
+        default: "*-*-* 6,00:00"

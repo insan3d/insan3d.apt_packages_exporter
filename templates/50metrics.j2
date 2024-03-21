@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+# {{ apt_packages_exporter_hook_filename }}: APT hook to export package states to node_exporter
+
+APT::Periodic::Update-Package-Lists "1";
+APT::Update::Post-Invoke-Success {{ '{' }}"{{ apt_packages_exporter_script_filename }} --dir {{ apt_packages_exporter_textfile_dir }}"{{ '}' }};
+DPkg::Post-Invoke {{ '{' }}"{{ apt_packages_exporter_script_filename }} --dir {{ apt_packages_exporter_textfile_dir }}"{{ '}' }};

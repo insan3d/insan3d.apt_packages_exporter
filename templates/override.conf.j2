@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+# /etc/systemd/system/apt-daily.timer.d/override.conf: apt_packages_exporter timer unit configuration
+
+OnCalendar={{ apt_packages_exporter_oncalendar }}

@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/tasks.json
+
+- name: Install dependencies
+  block:
+    - name: Ensure dependencies installed
+      ansible.builtin.apt:
+        package: "{{ item }}"
+        state: present
+
+      with_items:
+        - python3-apt
+        - python3-prometheus-client
+
+  rescue:
+    - name: Remove hook if APT failed
+      ansible.builtin.file:
+        dest: "{{ apt_packages_exporter_hook_filename }}"
+        state: absent
+
+    - name: Install dependencies without APT hook
+      ansible.builtin.apt:
+        package: "{{ item }}"
+        state: present
+
+      with_items:
+        - python3-apt
+        - python3-prometheus-client
+
+- name: Ensure script present
+  ansible.builtin.get_url:
+    url: "{{ apt_packages_exporter_script_source }}"
+    dest: "{{ apt_packages_exporter_script_filename }}"
+    mode: "0755"
+
+- name: Ensure hook present
+  ansible.builtin.template:
+    src: 50metrics.j2
+    dest: "{{ apt_packages_exporter_hook_filename }}"
+    mode: "0644"
+
+- name: Ensure textfile directory present
+  ansible.builtin.file:
+    dest: "{{ apt_packages_exporter_textfile_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Ensure timer unit present
+  ansible.builtin.copy:
+    dest: /lib/systemd/system/apt-daily.timer
+    content: ""
+    force: false
+    mode: "0644"
+
+- name: Ensure overrides directory exists
+  ansible.builtin.file:
+    dest: /etc/systemd/system/apt-daily.timer.d
+    state: directory
+    mode: "0755"
+
+- name: Ensure timer overrides present
+  register: _apt_daily_overrides_conf
+
+  ansible.builtin.template:
+    src: override.conf.j2
+    dest: /etc/systemd/system/apt-daily.timer.d/override.conf
+    mode: "0644"
+
+  notify:
+    - Restart systemd units
