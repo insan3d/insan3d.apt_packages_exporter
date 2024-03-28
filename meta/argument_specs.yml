@@ -3,7 +3,31 @@
 
 argument_specs:
   main:
+    short_description: Installs apt_packages_exporter
+    description: >-
+      Downloads and installs latest apt_packages_exporter (https://github.com/insan3d/apt_packages_exporter)
+      script as APT hook and configures systemd timer to do `apt update` periodically. Metrics are exported
+      in text format to be found and served by node_exporter's textfile collector. Obviously, intended to
+      be used only on Debian-based Linux distributions.
+
+    author: Alexander Pozlevich <apozlevich@gmail.com>
     options:
+      apt_packages_exporter_script_source:
+        description: URL to get latest script
+        default: https://raw.githubusercontent.com/insan3d/apt_packages_exporter/main/apt_packages_exporter
+
+      apt_packages_exporter_script_filename:
+        description: Filename to put script on target machine
+        default: /usr/local/bin/apt_packages_exporter
+
+      apt_packages_exporter_hook_filename:
+        description: APT hook filename
+        default: /etc/apt/apt.conf.d/50metrics
+
+      apt_packages_exporter_textfile_dir:
+        description: Path to directory from which node_exporter collects text metrics
+        default: /var/lib/node_exporter/textfile_collector
+
       apt_packages_exporter_oncalendar:
-        type: str
+        description: Systemd timer schedule
         default: "*-*-* 6,00:00"
