@@ -40,12 +40,6 @@
     dest: "{{ apt_packages_exporter_hook_filename }}"
     mode: "0644"
 
-- name: Ensure textfile directory present
-  ansible.builtin.file:
-    dest: "{{ apt_packages_exporter_textfile_dir }}"
-    state: directory
-    mode: "0755"
-
 - name: Ensure timer unit present
   ansible.builtin.copy:
     dest: /lib/systemd/system/apt-daily.timer
