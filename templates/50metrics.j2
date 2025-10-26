@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | default('This file is managed by Ansible') | comment }}
 
 # {{ apt_packages_exporter_hook_filename }}: APT hook to export package states to node_exporter
 

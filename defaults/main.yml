@@ -1,6 +1,5 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/vars.json
-
+---
 apt_packages_exporter_script_source: https://raw.githubusercontent.com/insan3d/apt_packages_exporter/main/apt_packages_exporter
 apt_packages_exporter_script_filename: /usr/local/bin/apt_packages_exporter
 apt_packages_exporter_hook_filename: /etc/apt/apt.conf.d/50metrics

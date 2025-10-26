@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | default('This file is managed by Ansible') | comment }}
 
 # /etc/systemd/system/apt-daily.timer.d/override.conf: apt_packages_exporter timer unit configuration
 

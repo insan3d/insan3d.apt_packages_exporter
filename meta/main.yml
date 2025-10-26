@@ -1,16 +1,17 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/meta.json
-
+---
 galaxy_info:
-  role_name: vbox_guest
-  author: insan3d
-  license: "license (BSD, MIT)"
+  namespace: insan3d
+  role_name: apt_packages_exporter
+  author: Alexander Pozlevich
+  license: MIT
 
   min_ansible_version: "2.16"
   platforms:
     - name: Debian
       versions:
         - bookworm
+        - trixie
 
   description: >-
     Downloads and installs latest apt_packages_exporter (https://github.com/insan3d/apt_packages_exporter)
