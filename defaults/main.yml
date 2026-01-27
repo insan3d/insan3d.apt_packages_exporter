@@ -3,5 +3,4 @@
 apt_packages_exporter_script_source: https://raw.githubusercontent.com/insan3d/apt_packages_exporter/main/apt_packages_exporter
 apt_packages_exporter_script_filename: /usr/local/bin/apt_packages_exporter
 apt_packages_exporter_hook_filename: /etc/apt/apt.conf.d/50metrics
-apt_packages_exporter_textfile_dir: /var/lib/node_exporter/textfile_collector
-apt_packages_exporter_oncalendar: "*-*-* 6,00:00"
+apt_packages_exporter_output: /var/lib/node_exporter/textfile_collector/apt.prom

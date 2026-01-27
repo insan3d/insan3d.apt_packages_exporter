@@ -6,15 +6,26 @@ galaxy_info:
   author: Alexander Pozlevich
   license: MIT
 
-  min_ansible_version: "2.16"
+  min_ansible_version: "2.20"
   platforms:
     - name: Debian
       versions:
+        - buster
+        - bullseye
         - bookworm
         - trixie
 
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+        - jammy
+        - kinetic
+        - noble
+
   description: >-
-    Downloads and installs latest apt_packages_exporter (https://github.com/insan3d/apt_packages_exporter)
-    script as APT hook and configures systemd timer to do `apt update` periodically. Metrics are exported
-    in text format to be found and served by node_exporter's textfile collector. Obviously, intended to
-    be used only on Debian-based Linux distributions.
+    Downloads and installs latest C(apt_packages_exporter)
+    (https://github.com/insan3d/apt_packages_exporter) script as C(APT) hook.
+    Metrics are exported in text format to be found and served by
+    C(node_exporter)'s textfile collector. Obviously, intended to be used only
+    on Debian-based Linux distributions.

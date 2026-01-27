@@ -2,7 +2,7 @@
 ---
 argument_specs:
   main:
-    short_description: Setups apt-packages-exporter
+    short_description: Setups apt_packages_exporter
     author:
       - Alexander Pozlevich <a.pozlevich@big3.ru>
 
@@ -12,17 +12,16 @@ argument_specs:
         default: https://raw.githubusercontent.com/insan3d/apt_packages_exporter/main/apt_packages_exporter
 
       apt_packages_exporter_script_filename:
-        description: Filename to put script on target machine
+        type: path
         default: /usr/local/bin/apt_packages_exporter
+        description: Filename to put script on target machine
 
       apt_packages_exporter_hook_filename:
-        description: APT hook filename
+        type: path
         default: /etc/apt/apt.conf.d/50metrics
+        description: C(APT) hook filename
 
-      apt_packages_exporter_textfile_dir:
-        description: Path to directory from which node_exporter collects text metrics
-        default: /var/lib/node_exporter/textfile_collector
-
-      apt_packages_exporter_oncalendar:
-        description: Systemd timer schedule
-        default: "*-*-* 6,00:00"
+      apt_packages_exporter_output:
+        type: path
+        default: /var/lib/node_exporter/textfile_collector/apt.prom
+        description: Path to file from which C(node_exporter) collects text metrics
