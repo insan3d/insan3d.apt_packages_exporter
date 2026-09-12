@@ -1,4 +1,6 @@
+# yamllint disable rule:line-length
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/meta.json
+# yamllint enable rule:line-length
 ---
 galaxy_info:
   namespace: insan3d
@@ -13,19 +15,16 @@ galaxy_info:
         - buster
         - bullseye
         - bookworm
-        - trixie
 
     - name: Ubuntu
       versions:
         - bionic
         - focal
         - jammy
-        - kinetic
-        - noble
 
   description: >-
-    Downloads and installs latest C(apt_packages_exporter)
-    (https://github.com/insan3d/apt_packages_exporter) script as C(APT) hook.
-    Metrics are exported in text format to be found and served by
-    C(node_exporter)'s textfile collector. Obviously, intended to be used only
-    on Debian-based Linux distributions.
+    Downloads and installs pinned C(apt_packages_exporter) script from
+    https://github.com/insan3d/apt_packages_exporter as C(APT) hook. Metrics
+    are exported in text format to be found and served by C(node_exporter)'s
+    textfile collector. Obviously, intended to be used only on Debian-based
+    Linux distributions.

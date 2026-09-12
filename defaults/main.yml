@@ -1,6 +1,12 @@
+# yamllint disable rule:line-length
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/vars.json
+# yamllint enable rule:line-length
 ---
-apt_packages_exporter_script_source: https://raw.githubusercontent.com/insan3d/apt_packages_exporter/main/apt_packages_exporter
-apt_packages_exporter_script_filename: /usr/local/bin/apt_packages_exporter
+apt_packages_exporter_script_ref: "1.0-4"
+apt_packages_exporter_script_source: >-
+  https://raw.githubusercontent.com/insan3d/apt_packages_exporter/{{
+  apt_packages_exporter_script_ref }}/apt_packages_exporter
+apt_packages_exporter_script_checksum: ""
+apt_packages_exporter_script_filename: /usr/local/bin/apt-packages-exporter
 apt_packages_exporter_hook_filename: /etc/apt/apt.conf.d/50metrics
 apt_packages_exporter_output: /var/lib/node_exporter/textfile_collector/apt.prom

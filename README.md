@@ -5,21 +5,24 @@ Minimal Ansible role that installs the `apt_packages_exporter` script and config
 ## What it does
 
 - Installs dependencies: `python3-apt`, `python3-prometheus-client`
-- Downloads the exporter script
+- Downloads the exporter script from a pinned Git ref
+- Ensures the textfile collector output directory exists
 - Installs an `APT` hook that runs the exporter after `apt update` and `dpkg` actions
 
 ## Requirements
 
 - Debian-based systems (Debian/Ubuntu)
 - Ansible
-- `node_exporter` with textfile collector enabled (directory exists and is writable)
+- `node_exporter` with textfile collector enabled
 
 ## Role variables
 
 | Variable | Description | Default |
 |-|-|-|
-| `apt_packages_exporter_script_source` | URL of script to download | `https://raw.githubusercontent.com/insan3d/apt_packages_exporter/main/apt_packages_exporter` |
-| `apt_packages_exporter_script_filename` | Target script path | `/usr/local/bin/apt_packages_exporter` |
+| `apt_packages_exporter_script_ref` | Git ref to download script from | `1.0-4` |
+| `apt_packages_exporter_script_source` | URL of script to download | `https://raw.githubusercontent.com/insan3d/apt_packages_exporter/1.0-4/apt_packages_exporter` |
+| `apt_packages_exporter_script_checksum` | Optional checksum for downloaded script | `""` |
+| `apt_packages_exporter_script_filename` | Target script path | `/usr/local/bin/apt-packages-exporter` |
 | `apt_packages_exporter_hook_filename` | Path of `APT` hook to manage | `/etc/apt/apt.conf.d/50metrics` |
 | `apt_packages_exporter_output` | Text metrics path | `/var/lib/node_exporter/textfile_collector/apt.prom` |
 

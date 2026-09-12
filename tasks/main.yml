@@ -1,4 +1,6 @@
+# yamllint disable rule:line-length
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/tasks.json
+# yamllint enable rule:line-length
 ---
 - name: Install dependencies
   block:
@@ -26,11 +28,18 @@
         package: "{{ item }}"
         state: present
 
+- name: Ensure textfile collector directory present
+  ansible.builtin.file:
+    path: "{{ apt_packages_exporter_output | dirname }}"
+    state: directory
+    mode: "0755"
+
 - name: Ensure script present
   ansible.builtin.get_url:
     url: "{{ apt_packages_exporter_script_source }}"
     dest: "{{ apt_packages_exporter_script_filename }}"
     mode: "0755"
+    checksum: "{{ apt_packages_exporter_script_checksum | d(omit, true) }}"
 
 - name: Ensure hook present
   ansible.builtin.template:
