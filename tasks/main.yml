@@ -3,6 +3,7 @@
 # yamllint enable rule:line-length
 ---
 - name: Install dependencies
+  become: true
   block:
     - name: Ensure dependencies installed
       loop:
@@ -29,12 +30,14 @@
         state: present
 
 - name: Ensure textfile collector directory present
+  become: true
   ansible.builtin.file:
     path: "{{ apt_packages_exporter_output | dirname }}"
     state: directory
     mode: "0755"
 
 - name: Ensure script present
+  become: true
   ansible.builtin.get_url:
     url: "{{ apt_packages_exporter_script_source }}"
     dest: "{{ apt_packages_exporter_script_filename }}"
@@ -42,6 +45,7 @@
     checksum: "{{ apt_packages_exporter_script_checksum | d(omit, true) }}"
 
 - name: Ensure hook present
+  become: true
   ansible.builtin.template:
     src: 50metrics.j2
     dest: "{{ apt_packages_exporter_hook_filename }}"
