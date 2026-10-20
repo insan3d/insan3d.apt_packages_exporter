@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/playbook.json
+---
+- name: Install APT package metrics exporter
+  hosts: all
+  gather_facts: false
+
+  roles:
+    - role: insan3d.apt_packages_exporter

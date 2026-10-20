@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/playbook.json
+---
+- name: Prepare Debian 13 package metadata
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ensure APT package lists are available
+      ansible.builtin.apt:
+        update_cache: true

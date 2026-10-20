@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/molecule.json
+---
+driver:
+  name: docker
+
+platforms:
+  - name: apt-packages-exporter-debian13
+    image: apt-packages-exporter-molecule-debian13:13
+    pre_build_image: true
+    pull: false
+    command: sleep infinity
+
+provisioner:
+  name: ansible
+
+  env:
+    ANSIBLE_ROLES_PATH: "${MOLECULE_PROJECT_DIRECTORY}/.."
+
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
+      stdout_callback: ansible.builtin.default
+
+verifier:
+  name: ansible
+
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - prepare
+    - converge
+    - check
+    - idempotence
+    - verify
+    - destroy

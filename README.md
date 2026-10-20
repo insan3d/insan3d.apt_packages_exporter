@@ -10,6 +10,10 @@ node_exporter textfile collector.
 - Ensures the textfile collector output directory exists
 - Installs an `APT` hook that runs the exporter after `apt update` and `dpkg` actions
 
+## Version
+
+Role version: `0.2.0`, stored in `VERSION`. The exporter script version is configured separately.
+
 ## Requirements
 
 - Debian 13 (trixie)
@@ -42,6 +46,12 @@ disables verification and can produce false `changed` results.
   roles:
     - role: insan3d.apt_packages_exporter
 ```
+
+## Tests
+
+Run `make molecule` with Docker and uv installed. The Debian 13 scenario covers installation, check mode, idempotence,
+script checksum and permissions, and metrics generation through the APT hook. Test dependencies are defined in
+`requirements-test.in` and installed into a local `.venv`.
 
 ## License
 

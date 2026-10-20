@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/playbook.json
+---
+- name: Verify APT package metrics exporter
+  hosts: all
+  gather_facts: false
+  vars_files: [../../defaults/main.yml]
+
+  tasks:
+    - name: Ensure exporter script state is available
+      register: _apt_packages_exporter_test_script
+      ansible.builtin.stat:
+        path: /usr/local/bin/apt-packages-exporter
+        checksum_algorithm: sha256
+
+    - name: Ensure exporter script matches the release and is executable
+      ansible.builtin.assert:
+        that:
+          - _apt_packages_exporter_test_script.stat.mode == '0755'
+          - >-
+            _apt_packages_exporter_test_script.stat.checksum ==
+            'e3007d1d455df9fbd3bfd611e664acc689a4589a8de86f88c30285650be728b5'
+
+    - name: Ensure check mode verifies the installed script without network access
+      register: _apt_packages_exporter_test_check
+      check_mode: true
+      ansible.builtin.get_url:
+        url: http://127.0.0.1:1/unused
+        dest: "{{ apt_packages_exporter_script_filename }}"
+        checksum: "{{ apt_packages_exporter_script_checksum }}"
+        mode: "u=rwx,g=rx,o=rx"
+        use_proxy: false
+        timeout: 2
+
+    - name: Ensure check mode reports no changes for the installed script
+      ansible.builtin.assert:
+        that: [not _apt_packages_exporter_test_check.changed]
+
+    - name: Ensure APT configuration is valid
+      changed_when: false
+      ansible.builtin.command: apt-config dump
+
+    - name: Ensure stale metrics are absent before testing the APT hook
+      ansible.builtin.file:
+        path: /var/lib/node_exporter/textfile_collector/apt.prom
+        state: absent
+
+    - name: Ensure APT update triggers metric generation
+      changed_when: false
+      ansible.builtin.command: apt-get update
+
+    - name: Ensure generated metrics are available
+      register: _apt_packages_exporter_test_metrics
+      ansible.builtin.slurp:
+        src: /var/lib/node_exporter/textfile_collector/apt.prom
+
+    - name: Ensure the APT hook exports Prometheus metrics
+      ansible.builtin.assert:
+        that:
+          - "'apt_reboot_required ' in (_apt_packages_exporter_test_metrics.content | b64decode)"
+
+    - name: Ensure generated metrics are readable
+      register: _apt_packages_exporter_test_output
+      ansible.builtin.stat:
+        path: /var/lib/node_exporter/textfile_collector/apt.prom
+
+    - name: Ensure metric permissions allow textfile collection
+      ansible.builtin.assert:
+        that: [_apt_packages_exporter_test_output.stat.mode == '0644']

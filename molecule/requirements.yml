@@ -1,0 +1,5 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/requirements.json
+---
+collections:
+  - name: community.docker
+  - name: ansible.posix
