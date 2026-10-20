@@ -23,8 +23,11 @@ argument_specs:
 
       apt_packages_exporter_script_checksum:
         type: str
-        default: ""
-        description: Optional checksum for downloaded exporter script
+        default: "sha256:e3007d1d455df9fbd3bfd611e664acc689a4589a8de86f88c30285650be728b5"
+        description: >-
+          Checksum of the exporter script. The default matches ref 1.0-4;
+          provide a matching checksum when overriding the ref or source URL.
+          An empty value disables verification and can report false changes in check mode.
 
       apt_packages_exporter_script_filename:
         type: path

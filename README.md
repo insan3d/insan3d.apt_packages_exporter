@@ -21,10 +21,14 @@ Minimal Ansible role that installs the `apt_packages_exporter` script and config
 |-|-|-|
 | `apt_packages_exporter_script_ref` | Git ref to download script from | `1.0-4` |
 | `apt_packages_exporter_script_source` | URL of script to download | `https://raw.githubusercontent.com/insan3d/apt_packages_exporter/1.0-4/apt_packages_exporter` |
-| `apt_packages_exporter_script_checksum` | Optional checksum for downloaded script | `""` |
+| `apt_packages_exporter_script_checksum` | Script checksum; override together with the ref or source URL | SHA256 of `1.0-4` |
 | `apt_packages_exporter_script_filename` | Target script path | `/usr/local/bin/apt-packages-exporter` |
 | `apt_packages_exporter_hook_filename` | Path of `APT` hook to manage | `/etc/apt/apt.conf.d/50metrics` |
 | `apt_packages_exporter_output` | Text metrics path | `/var/lib/node_exporter/textfile_collector/apt.prom` |
+
+The default checksum matches the script at ref `1.0-4`. When changing the ref or source URL,
+provide its matching checksum. With an unchanged script, check mode compares the checksum locally
+without an HTTP request. An empty checksum disables verification and can produce false `changed` results.
 
 ## Example playbook
 

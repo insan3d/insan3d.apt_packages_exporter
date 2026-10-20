@@ -6,7 +6,7 @@ apt_packages_exporter_script_ref: "1.0-4"
 apt_packages_exporter_script_source: >-
   https://raw.githubusercontent.com/insan3d/apt_packages_exporter/{{
   apt_packages_exporter_script_ref }}/apt_packages_exporter
-apt_packages_exporter_script_checksum: ""
+apt_packages_exporter_script_checksum: "sha256:e3007d1d455df9fbd3bfd611e664acc689a4589a8de86f88c30285650be728b5"
 apt_packages_exporter_script_filename: /usr/local/bin/apt-packages-exporter
 apt_packages_exporter_hook_filename: /etc/apt/apt.conf.d/50metrics
 apt_packages_exporter_output: /var/lib/node_exporter/textfile_collector/apt.prom
