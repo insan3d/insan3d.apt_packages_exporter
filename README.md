@@ -9,10 +9,12 @@ node_exporter textfile collector.
 - Downloads the exporter script from a pinned Git ref
 - Ensures the textfile collector output directory exists
 - Installs an `APT` hook that runs the exporter after `apt update` and `dpkg` actions
+- Enables daily package index checks through the system apt-daily timer
+- Disables automatic upgrades, package downloads and notifications by default
 
 ## Version
 
-Role version: `0.2.0`, stored in `VERSION`. The exporter script version is configured separately.
+Role version: `0.3.0`, stored in `VERSION`. The exporter script version is configured separately.
 
 ## Requirements
 
@@ -33,6 +35,9 @@ Defaults are defined in [defaults/main.yml](defaults/main.yml).
 | `apt_packages_exporter_hook_filename`   | Managed APT hook path                             |
 | `apt_packages_exporter_output`          | Textfile metrics path                             |
 
+Periodic APT settings are configured through `apt_packages_exporter_periodic_options`. The mapping replaces the complete
+defaults; a null value clears the corresponding APT option.
+
 The default checksum matches the script at ref `1.0-4`. When changing the ref or source URL, provide its matching
 checksum. With an unchanged script, check mode compares the checksum locally without an HTTP request. An empty checksum
 disables verification and can produce false `changed` results.
@@ -50,7 +55,7 @@ disables verification and can produce false `changed` results.
 ## Tests
 
 Run `make molecule` with Docker and uv installed. The Debian 13 scenario covers installation, check mode, idempotence,
-script checksum and permissions, and metrics generation through the APT hook. Test dependencies are defined in
+script checksum and permissions, and metrics generation through periodic APT checks. Test dependencies are defined in
 `requirements-test.in` and installed into a local `.venv`.
 
 ## License

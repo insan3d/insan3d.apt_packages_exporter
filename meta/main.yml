@@ -4,7 +4,7 @@ galaxy_info:
   namespace: insan3d
   role_name: apt_packages_exporter
   author: Alexander Pozlevich
-  description: Install apt_packages_exporter as an APT hook for node_exporter on Debian 13.
+  description: Install APT package metrics and periodic package index checks on Debian 13.
   license: MIT
   min_ansible_version: "2.20"
 

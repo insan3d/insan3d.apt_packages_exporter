@@ -1,0 +1,9 @@
+{{ ansible_managed | default('This file is managed by Ansible') | comment('c') }}
+
+{%  for option, value in apt_packages_exporter_periodic_options.items() %}
+{%      if value is none %}
+#clear {{ option }};
+{%      else %}
+{{ option }} {{ (value | string) | to_json }};
+{%      endif %}
+{%  endfor %}

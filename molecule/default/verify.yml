@@ -35,18 +35,55 @@
       ansible.builtin.assert:
         that: [not _apt_packages_exporter_test_check.changed]
 
-    - name: Ensure APT configuration is valid
+    - name: Ensure effective APT settings are available
       changed_when: false
+      register: _apt_packages_exporter_test_periodic_config
       ansible.builtin.command: apt-config dump
+
+    - name: Ensure periodic APT checks cannot install packages or send notifications
+      ansible.builtin.assert:
+        that:
+          - "'APT::Periodic::Enable \"1\";' in _apt_packages_exporter_test_periodic_config.stdout"
+          - "'APT::Periodic::Update-Package-Lists \"1\";' in _apt_packages_exporter_test_periodic_config.stdout"
+          - "'APT::Periodic::Unattended-Upgrade \"0\";' in _apt_packages_exporter_test_periodic_config.stdout"
+          - "'APT::Periodic::Download-Upgradeable-Packages \"0\";' in _apt_packages_exporter_test_periodic_config.stdout"
+          - "'APT::Periodic::Verbose \"0\";' in _apt_packages_exporter_test_periodic_config.stdout"
+          - "'Unattended-Upgrade::Mail ' not in _apt_packages_exporter_test_periodic_config.stdout"
+
+    - name: Ensure periodic APT timer state is available
+      register: _apt_packages_exporter_test_periodic_timer
+      ansible.builtin.systemd_service:
+        name: apt-daily.timer
+
+    - name: Ensure periodic APT timer is enabled and running
+      ansible.builtin.assert:
+        that:
+          - _apt_packages_exporter_test_periodic_timer.status.ActiveState == 'active'
+          - _apt_packages_exporter_test_periodic_timer.status.UnitFileState == 'enabled'
 
     - name: Ensure stale metrics are absent before testing the APT hook
       ansible.builtin.file:
         path: /var/lib/node_exporter/textfile_collector/apt.prom
         state: absent
 
-    - name: Ensure APT update triggers metric generation
+    - name: Ensure periodic APT update stamp is absent
+      ansible.builtin.file:
+        path: /var/lib/apt/periodic/update-stamp
+        state: absent
+
+    - name: Ensure random delay is disabled for the periodic APT test
+      ansible.builtin.copy:
+        dest: /tmp/apt-periodic-test.conf
+        content: 'APT::Periodic::RandomSleep "0";'
+        mode: "u=rw,g=r,o=r"
+
+    - name: Ensure periodic APT checks generate metrics
       changed_when: false
-      ansible.builtin.command: apt-get update
+
+      environment:
+        APT_CONFIG: /tmp/apt-periodic-test.conf
+
+      ansible.builtin.command: /usr/lib/apt/apt.systemd.daily update
 
     - name: Ensure generated metrics are available
       register: _apt_packages_exporter_test_metrics

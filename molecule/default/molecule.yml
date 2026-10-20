@@ -8,7 +8,10 @@ platforms:
     image: apt-packages-exporter-molecule-debian13:13
     pre_build_image: true
     pull: false
-    command: sleep infinity
+    privileged: true
+    cgroupns_mode: private
+    command: /sbin/init
+    tmpfs: [/run, /run/lock, /tmp]
 
 provisioner:
   name: ansible

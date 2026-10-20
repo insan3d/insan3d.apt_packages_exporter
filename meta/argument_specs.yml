@@ -2,7 +2,7 @@
 ---
 argument_specs:
   main:
-    short_description: Install apt_packages_exporter and configure its APT hook.
+    short_description: Install apt_packages_exporter with its APT hook and periodic package checks.
     author: [Alexander Pozlevich <apozlevich@gmail.com>]
 
     options:
@@ -41,3 +41,11 @@ argument_specs:
         default: /var/lib/node_exporter/textfile_collector/apt.prom
         description: >-
           Path to file from which C(node_exporter) collects text metrics
+
+      apt_packages_exporter_periodic_options:
+        type: dict
+
+        description:
+          - Mapping of APT configuration keys to string values.
+          - A null value clears the corresponding option with the APT clear directive.
+          - Replaces the complete default mapping when overridden.

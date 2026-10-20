@@ -8,3 +8,15 @@ apt_packages_exporter_script_checksum: "sha256:e3007d1d455df9fbd3bfd611e664acc68
 apt_packages_exporter_script_filename: /usr/local/bin/apt-packages-exporter
 apt_packages_exporter_hook_filename: /etc/apt/apt.conf.d/50metrics
 apt_packages_exporter_output: /var/lib/node_exporter/textfile_collector/apt.prom
+
+apt_packages_exporter_periodic_options:
+  APT::Periodic::Enable: "1"
+  APT::Periodic::Update-Package-Lists: "1"
+  APT::Periodic::Unattended-Upgrade: "0"
+  APT::Periodic::Download-Upgradeable-Packages: "0"
+  APT::Periodic::AutocleanInterval: "0"
+  APT::Periodic::CleanInterval: "0"
+  APT::Periodic::Verbose: "0"
+  Unattended-Upgrade::Mail: null
+  Unattended-Upgrade::InstallOnShutdown: "false"
+  Unattended-Upgrade::Automatic-Reboot: "false"

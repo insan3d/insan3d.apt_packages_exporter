@@ -43,3 +43,20 @@
     src: 50metrics.j2
     dest: "{{ apt_packages_exporter_hook_filename }}"
     mode: "u=rw,g=r,o=r"
+
+- name: Ensure periodic APT checks are configured
+  become: true
+  ansible.builtin.template:
+    src: periodic-checks.j2
+    dest: /etc/apt/apt.conf.d/99-periodic-checks
+    validate: apt-config -c %s dump
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Ensure periodic APT timer is enabled and running
+  become: true
+  ansible.builtin.systemd:
+    name: apt-daily.timer
+    enabled: true
+    state: started
