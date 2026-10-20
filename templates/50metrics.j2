@@ -1,6 +1,9 @@
-{{ ansible_managed | default('This file is managed by Ansible') | comment }}
+{{ ansible_managed | default('This file is managed by Ansible') | comment('c') }}
 
-# {{ apt_packages_exporter_hook_filename }}: APT hook to export package states to node_exporter
+APT::Update::Post-Invoke-Success {
+  "{{ apt_packages_exporter_script_filename }} --output {{ apt_packages_exporter_output }}";
+};
 
-APT::Update::Post-Invoke-Success {{ '{' }}"{{ apt_packages_exporter_script_filename }} --output {{ apt_packages_exporter_output }}"{{ '}' }};
-DPkg::Post-Invoke {{ '{' }}"{{ apt_packages_exporter_script_filename }} --output {{ apt_packages_exporter_output }}"{{ '}' }};
+DPkg::Post-Invoke {
+  "{{ apt_packages_exporter_script_filename }} --output {{ apt_packages_exporter_output }}";
+};

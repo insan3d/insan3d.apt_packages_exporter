@@ -1,6 +1,7 @@
 # `apt_packages_exporter` (Ansible role)
 
-Minimal Ansible role that installs the `apt_packages_exporter` script and configures an APT hook to emit metrics for node_exporter textfile collector.
+Minimal Ansible role that installs the `apt_packages_exporter` script and configures an APT hook to emit metrics for
+node_exporter textfile collector.
 
 ## What it does
 
@@ -11,30 +12,33 @@ Minimal Ansible role that installs the `apt_packages_exporter` script and config
 
 ## Requirements
 
-- Debian-based systems (Debian/Ubuntu)
+- Debian 13 (trixie)
 - Ansible
 - `node_exporter` with textfile collector enabled
 
 ## Role variables
 
-| Variable | Description | Default |
-|-|-|-|
-| `apt_packages_exporter_script_ref` | Git ref to download script from | `1.0-4` |
-| `apt_packages_exporter_script_source` | URL of script to download | `https://raw.githubusercontent.com/insan3d/apt_packages_exporter/1.0-4/apt_packages_exporter` |
-| `apt_packages_exporter_script_checksum` | Script checksum; override together with the ref or source URL | SHA256 of `1.0-4` |
-| `apt_packages_exporter_script_filename` | Target script path | `/usr/local/bin/apt-packages-exporter` |
-| `apt_packages_exporter_hook_filename` | Path of `APT` hook to manage | `/etc/apt/apt.conf.d/50metrics` |
-| `apt_packages_exporter_output` | Text metrics path | `/var/lib/node_exporter/textfile_collector/apt.prom` |
+Defaults are defined in [defaults/main.yml](defaults/main.yml).
 
-The default checksum matches the script at ref `1.0-4`. When changing the ref or source URL,
-provide its matching checksum. With an unchanged script, check mode compares the checksum locally
-without an HTTP request. An empty checksum disables verification and can produce false `changed` results.
+| Variable                                | Description                                       |
+| --------------------------------------- | ------------------------------------------------- |
+| `apt_packages_exporter_script_ref`      | Git ref of the script                             |
+| `apt_packages_exporter_script_source`   | Script download URL                               |
+| `apt_packages_exporter_script_checksum` | Checksum matching the selected ref and source URL |
+| `apt_packages_exporter_script_filename` | Target script path                                |
+| `apt_packages_exporter_hook_filename`   | Managed APT hook path                             |
+| `apt_packages_exporter_output`          | Textfile metrics path                             |
+
+The default checksum matches the script at ref `1.0-4`. When changing the ref or source URL, provide its matching
+checksum. With an unchanged script, check mode compares the checksum locally without an HTTP request. An empty checksum
+disables verification and can produce false `changed` results.
 
 ## Example playbook
 
 ```yaml
-- hosts: all
-  become: true
+- name: Install the APT package metrics exporter
+  hosts: all
+
   roles:
     - role: insan3d.apt_packages_exporter
 ```

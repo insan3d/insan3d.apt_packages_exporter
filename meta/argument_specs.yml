@@ -1,12 +1,9 @@
-# yamllint disable rule:line-length
-# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/role-arg-spec.json
-# yamllint enable rule:line-length
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/role-arg-spec.json
 ---
 argument_specs:
   main:
-    short_description: Setups apt_packages_exporter
-    author:
-      - Alexander Pozlevich <a.pozlevich@big3.ru>
+    short_description: Install apt_packages_exporter and configure its APT hook.
+    author: [Alexander Pozlevich <apozlevich@gmail.com>]
 
     options:
       apt_packages_exporter_script_ref:
@@ -16,10 +13,10 @@ argument_specs:
 
       apt_packages_exporter_script_source:
         type: str
-        description: URL to get exporter script from
         default: >-
           https://raw.githubusercontent.com/insan3d/apt_packages_exporter/{{
           apt_packages_exporter_script_ref }}/apt_packages_exporter
+        description: URL to download the exporter script from.
 
       apt_packages_exporter_script_checksum:
         type: str

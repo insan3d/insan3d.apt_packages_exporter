@@ -1,30 +1,15 @@
-# yamllint disable rule:line-length
-# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/meta.json
-# yamllint enable rule:line-length
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/meta.json
 ---
 galaxy_info:
   namespace: insan3d
   role_name: apt_packages_exporter
   author: Alexander Pozlevich
+  description: Install apt_packages_exporter as an APT hook for node_exporter on Debian 13.
   license: MIT
-
   min_ansible_version: "2.20"
+
   platforms:
     - name: Debian
-      versions:
-        - buster
-        - bullseye
-        - bookworm
+      versions: [trixie]
 
-    - name: Ubuntu
-      versions:
-        - bionic
-        - focal
-        - jammy
-
-  description: >-
-    Downloads and installs pinned C(apt_packages_exporter) script from
-    https://github.com/insan3d/apt_packages_exporter as C(APT) hook. Metrics
-    are exported in text format to be found and served by C(node_exporter)'s
-    textfile collector. Obviously, intended to be used only on Debian-based
-    Linux distributions.
+dependencies: []

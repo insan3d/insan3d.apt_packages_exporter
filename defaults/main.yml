@@ -1,6 +1,4 @@
-# yamllint disable rule:line-length
-# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/vars.json
-# yamllint enable rule:line-length
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/vars.json
 ---
 apt_packages_exporter_script_ref: "1.0-4"
 apt_packages_exporter_script_source: >-

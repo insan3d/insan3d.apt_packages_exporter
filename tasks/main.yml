@@ -1,52 +1,45 @@
-# yamllint disable rule:line-length
-# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/tasks.json
-# yamllint enable rule:line-length
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/9bce2bfb8f4a/src/ansiblelint/schemas/tasks.json
 ---
-- name: Install dependencies
+- name: Ensure exporter dependencies are installed
   become: true
-  block:
-    - name: Ensure dependencies installed
-      loop:
-        - python3-apt
-        - python3-prometheus-client
 
+  block:
+    - name: Ensure Python dependencies are installed
+      loop: [python3-apt, python3-prometheus-client]
       ansible.builtin.apt:
         package: "{{ item }}"
         state: present
 
   rescue:
-    - name: Remove hook if APT failed
+    - name: Remove exporter hook after an APT failure
       ansible.builtin.file:
         dest: "{{ apt_packages_exporter_hook_filename }}"
         state: absent
 
-    - name: Install dependencies without APT hook
-      loop:
-        - python3-apt
-        - python3-prometheus-client
-
+    - name: Install Python dependencies without the exporter hook
+      loop: [python3-apt, python3-prometheus-client]
       ansible.builtin.apt:
         package: "{{ item }}"
         state: present
 
-- name: Ensure textfile collector directory present
+- name: Ensure textfile collector directory is present
   become: true
   ansible.builtin.file:
     path: "{{ apt_packages_exporter_output | dirname }}"
     state: directory
-    mode: "0755"
+    mode: "u=rwx,g=rx,o=rx"
 
-- name: Ensure script present
+- name: Ensure exporter script is present
   become: true
   ansible.builtin.get_url:
     url: "{{ apt_packages_exporter_script_source }}"
     dest: "{{ apt_packages_exporter_script_filename }}"
-    mode: "0755"
+    mode: "u=rwx,g=rx,o=rx"
     checksum: "{{ apt_packages_exporter_script_checksum | d(omit, true) }}"
 
-- name: Ensure hook present
+- name: Ensure APT hook is configured
   become: true
   ansible.builtin.template:
     src: 50metrics.j2
     dest: "{{ apt_packages_exporter_hook_filename }}"
-    mode: "0644"
+    mode: "u=rw,g=r,o=r"
